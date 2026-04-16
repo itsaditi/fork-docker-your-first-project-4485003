@@ -1,17 +1,24 @@
-# Use an official Python runtime as the base image
+# Use offical Python runtime as base image
 FROM python:3.12-rc-bookworm
 
-# Set the working directory in the container to /app
+# Set working directory in the container to /app
 WORKDIR /app
 
-# Copy the current directory contents into the container at /app
+# Copy current directory contentsinto the container at /app
+# COPY <current-dir> <dest-dir-within-container>
 COPY . /app
 
-# Install the required packages
+# Install required packages
+# --no-cache-dir - This tells pip not to use a cache when 
+# installing packages, which ensures that the latest version 
+# of the package is always used.
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Set the environment variable for Flask
+# Set env variable for flask
 ENV FLASK_APP=app.py
 
-# Run the command to start the Flask application
-CMD ["flask", "run", "--host=0.0.0.0"]
+# Run command to start the Flask application
+# Note - Docker file will only use the final command defined, so
+#        you have to be careful while building docker files so that
+#        you dont overwrite your default command
+CMD [ "flask", "run", "--host=0.0.0.0" ]
